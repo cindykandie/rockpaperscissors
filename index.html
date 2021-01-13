@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="qazi3.css">
+    <title>CHALLENGE 3: ROCK, PAPER, SCISSORS</title>
+</head>
+<body>
+    <style>
+        *{
+    padding:0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: cursive;
+}
+body{
+    background-color: rgb(111, 111, 228);
+    height: 100vh;
+    text-align: center;
+}
+.container{
+    position: absolute;
+    border: 1px solid black;
+    top: 20%;
+    left:50%;
+    transform: translate(-50%,-20%);
+    padding: 10px;
+}
+.game{
+    border-top: 1px solid black ;
+    display: flex;
+}
+.game img{
+    width: 150px;
+    height:150px;
+    margin:10px;
+    box-shadow: 0 10px 50px rgba(170, 23, 23, 0.7);
+    justify-content: space-around;
+}
+.game img:hover{
+    box-shadow: 0 10px 50px #f80b95;
+}
+/* style game */
+    </style>
+    <div class="container">
+        <h2>CHALLENGE 3: ROCK, PAPER, SCISSORS</h2>
+        <div class="game" id="rps-flexbox">
+            <img id="rock" src="images/rock.jpg" alt="" onclick="rpsGame(this)">
+            <img id="paper" src="images/paper.jpg" alt="" onclick="rpsGame(this)">
+            <img id="scissors" src="images/scissors.jpg" alt=""onclick="rpsGame(this)">
+        </div>
+    </div>
+    <script src="qazi3.js"></script>
+    <script>
+        // Challenge 3: Rock, Paper, Scissors.
+function rpsGame(yourChoice){
+console.log(yourChoice)
+var humanChoice, botChoice;
+humanChoice= yourChoice.id
+botChoice= numberToChoice(randToRpsInt())
+console.log("Comp Choice is "+botChoice)
+results = decideWinner(humanChoice,botChoice)
+console.log(results)
+
+message = finalMessage(results)
+console.log(message)
+rpsFrontEnd(yourChoice.id, botChoice,message);
+}
+
+function randToRpsInt(){
+    return  Math.floor(Math.random()*3)
+}
+function numberToChoice(number){
+    return ['rock','paper','scissors'][number]
+}
+
+
+
+function decideWinner(yourChoice, compChoice){
+    rpsDatabase={
+        'rock':{'scissors':1, 'rock':0.5, 'paper':0},
+        'paper':{ 'rock':1,'paper':0.5, 'scissors':0 },
+        'scissors':{'paper':1, 'scissors':0.5, 'rock':0, },
+    }
+
+
+var yourScore = rpsDatabase[yourChoice][compChoice]
+var compScore =rpsDatabase[compChoice][yourChoice]
+return [yourScore,compScore]
+}
+
+function finalMessage([yourScore,compScore]){
+    if(yourScore===0){
+       return{'message':'LOSERRR! BOOYAAH! IN YOUR FACE!!!', 'color':'red'};
+    } else if(yourScore===0.5){
+        return{'message':'DRAAAWW!!! BORIING!!', 'color':'black'};
+    } else{
+        return{'message':'WINNER🎁🎁!!!RESPECT!!', 'color':'purple'};
+    }
+}
+
+function rpsFrontEnd(humanImageChoice, botImageChoice,finalMessage){
+    var imagesDatabase = {
+        'rock': document.getElementById('rock').src,
+        'paper': document.getElementById('paper').src,
+        'scissors': document.getElementById('scissors').src,
+    }
+    document.getElementById('rock').remove()
+    document.getElementById('paper').remove()
+    document.getElementById('scissors').remove()
+
+    var humanDiv= document.createElement('div')
+    var messageDiv= document.createElement('div')
+    var botDiv= document.createElement('div')
+  
+
+    humanDiv.innerHTML = "<img src='"+ imagesDatabase[humanImageChoice] + "' style:'box-shadow: 0 10px 50px #f80b95;'>"
+    document.getElementById('rps-flexbox').appendChild(humanDiv)
+
+    messageDiv.innerHTML = "<h1 style='color:" + finalMessage['color']+";font-size:30px;padding:30px; '>"+finalMessage['message']+"</h1>"
+    document.getElementById('rps-flexbox').appendChild(messageDiv)
+
+
+    botDiv.innerHTML = "<img src='"+ imagesDatabase[botImageChoice] + "'style:'box-shadow:0px 10px 50px rgb(111, 111, 228);'>"
+    document.getElementById('rps-flexbox').appendChild(botDiv)
+
+   
+};
+
+    </script>
+</body>
+</html>
